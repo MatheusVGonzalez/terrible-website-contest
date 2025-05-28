@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error 404</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        .captcha-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 2px solid #ccc;
+            padding: 20px;
+            z-index: 9999;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        .captcha-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .captcha-grid img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border: 2px solid #ccc;
+            cursor: pointer;
+        }
+        .captcha-grid img.selected {
+            border-color: blue;
+            border: 6px solid blue;
+        }
+        .captcha-buttons {
+            margin-top: 5px;
+            text-align: right;
+        }
+        .start-area {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .start-area button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img class="logo" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_120x44dp.png" alt="Google Logo">
+        <p class="error">One more step...</p>
+
+        <div class="start-area">
+            <p>Click the button below to continue verification</p>
+            <button id="beginCaptcha">Begin Challenge</button>
+        </div>
+    </div>
+
+    <div class="orbit">
+        <img class="robot2" src="robot.png" alt="Robot">
+    </div>
+
+    <div class="captcha-popup" id="captchaPopup">
+        <p>Select all images with <strong>cats</strong>:</p>
+        <div class="captcha-grid" id="captchaGrid">
+            <img src="images/cat1.jpg" alt="cat" data-correct="true">
+            <img src="images/dog1.jpg" alt="dog">
+            <img src="images/cat2.jpg" alt="cat" data-correct="true">
+            <img src="images/goat.jpg" alt="goat">
+            <img src="images/cat3.jpg" alt="cat" data-correct="true">
+            <img src="images/car1.jpg" alt="car">
+            <img src="images/cat4.jpg" alt="cat" data-correct="true">
+            <img src="images/car2.jpg" alt="car">
+            <img src="images/cat5.jpg" alt="cat" data-correct="true">
+        </div>
+        <div class="captcha-buttons">
+            <button onclick="confirmCaptcha()">Confirm</button>
+        </div>
+    </div>
+
+    <script>
+        const beginCaptcha = document.getElementById("beginCaptcha");
+        const popup = document.getElementById("captchaPopup");
+        const gridImages = document.querySelectorAll("#captchaGrid img");
+
+        beginCaptcha.addEventListener("click", function () {
+            popup.style.display = "block";
+        });
+
+        gridImages.forEach(img => {
+            img.addEventListener("click", () => {
+                img.classList.toggle("selected");
+                setTimeout(() => img.classList.remove("selected"), 2500);
+            });
+        });
+
+        function confirmCaptcha() {
+            const selected = document.querySelectorAll("#captchaGrid img.selected");
+            const correctImages = document.querySelectorAll("#captchaGrid img[data-correct='true']");
+
+            let allCorrectSelected = true;
+
+            correctImages.forEach(img => {
+                if (!img.classList.contains("selected")) {
+                    allCorrectSelected = false;
+                }
+            });
+
+            selected.forEach(img => {
+                if (img.dataset.correct !== "true") {
+                    allCorrectSelected = false;
+                }
+            });
+
+            if (allCorrectSelected && selected.length === correctImages.length) {
+                window.location.href = "page7.html";
+            } else {
+                alert("you need to be faster and more accurate... Try again!");
+            }
+
+            popup.style.display = "none";
+        }
+    </script>
+</body>
+</html>

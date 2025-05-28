@@ -1,46 +1,177 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error 404</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        .captcha-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 2px solid #ccc;
+            padding: 20px;
+            z-index: 9999;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        .captcha-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .captcha-grid img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border: 2px solid #ccc;
+            cursor: pointer;
+        }
+        .captcha-grid img.selected {
+            border-color: green;
+            border: 6px solid green;
+        }
+        .captcha-buttons {
+            margin-top: 10px;
+            text-align: right;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <img class ="logo" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_120x44dp.png" alt="Google Logo"></a>
-        <p class="error"> Just to confirm </p>
-          <label>
-                <input type="checkbox" id="check1">
-                Não sou um robô
-            </label>
-            <div class="step step2">
-                <label>
+        <img class="logo" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_120x44dp.png" alt="Google Logo">
+        <p class="error">Just to confirm, This is a  ReCAPTCHA</p>
+
+        <div class="slider-captcha">
+            <p>Swipe to confirm you are not a robot</p>
+            <input type="range" min="0" max="100" value="0" class="slider" id="sliderCaptcha">
+        </div>
+
+        <div class="step step2">
+            <label>
                 <input type="checkbox" id="check2">
-                Tem certeza?
-                </label>
-            </div>
+                Are you sure?
+            </label>
+        </div>
 
-            <div class="step step3">
-                <label>
+        <div class="step step3">
+            <label>
                 <input type="checkbox" id="check3">
-                Eu acho que não…
-                </label>
-            </div>
+                I don't think so…
+            </label>
+        </div>
 
-            <div class="step step4">
-                <p>Ah, beleza 😅</p>
-            </div>
+        <div class="step step4">
+            <p>Hmmm, ok. Go Ahead</p>
+        </div>
 
-
-        <a href="page5.html">
-        <button class="pulse btn-container">Click Here to Update</button>
+        <a href="#" id="openCaptcha" style="display: none;">
+            <button class="pulse btn-container" id="updateBtn">Click Here to Update</button>
         </a>
+
+
     </div>
+
     <div class="orbit">
         <img class="robot2" src="robot.png" alt="Robot">
     </div>
-    
+
+    <div class="captcha-popup" id="captchaPopup">
+        <p>Select all images with <strong>cars</strong>:</p>
+        <div class="captcha-grid" id="captchaGrid">
+            <img src="images/car1.jpg" alt="car" data-correct="true">
+            <img src="images/goat.jpg" alt="goat">
+            <img src="images/car2.jpg" alt="car" data-correct="true">
+            <img src="images/dog1.jpg" alt="dog">
+            <img src="images/car3.jpg" alt="car" data-correct="true">
+            <img src="images/cat.jpg" alt="cat">
+            <img src="images/car4.jpg" alt="car" data-correct="true">
+            <img src="images/koala.jpg" alt="koala">
+            <img src="images/car5.jpg" alt="car" data-correct="true">
+        </div>
+        <div class="captcha-buttons">
+            <button onclick="confirmCaptcha()">Confirmar</button>
+        </div>
+    </div>
+
+    <script>
+        const slider = document.getElementById("sliderCaptcha");
+        const popup = document.getElementById("captchaPopup");
+        const openCaptcha = document.getElementById("openCaptcha");
+        const gridImages = document.querySelectorAll("#captchaGrid img");
+
+        slider.addEventListener("input", function () {
+            if (this.value >= 100) {
+                document.querySelector(".step2").style.display = "block";
+                this.disabled = true;
+                this.style.background = "#a2e29f";
+            }
+        });
+
+        document.getElementById("check2").addEventListener("change", function () {
+            if (this.checked) {
+                document.querySelector(".step3").style.display = "block";
+            }
+        });
+
+        document.getElementById("check3").addEventListener("change", function () {
+            if (this.checked) {
+                document.querySelector(".step4").style.display = "block";
+            }
+        });
+
+        openCaptcha.addEventListener("click", function (e) {
+            e.preventDefault();
+            popup.style.display = "block";
+        });
+
+        gridImages.forEach(img => {
+            img.addEventListener("click", () => {
+                img.classList.toggle("selected");
+                setTimeout(() => img.classList.remove("selected"), 3000);
+            });
+        });
+
+        function confirmCaptcha() {
+            const selected = document.querySelectorAll("#captchaGrid img.selected");
+            const correctImages = document.querySelectorAll("#captchaGrid img[data-correct='true']");
+            
+            let allCorrectSelected = true;
+
+            correctImages.forEach(img => {
+                if (!img.classList.contains("selected")) {
+                    allCorrectSelected = false;
+                }
+            });
+
+            selected.forEach(img => {
+                if (img.dataset.correct !== "true") {
+                    allCorrectSelected = false;
+                }
+            });
+
+            if (allCorrectSelected && selected.length === correctImages.length) {
+                window.location.href = "page6.html";
+            } else {
+                alert("Hmm... I forgot to say, you have 3 seconds to tag them all... try again!!");
+            }
+
+            popup.style.display = "none";
+        }
+
+        document.getElementById("check3").addEventListener("change", function () {
+        if (this.checked) {
+            document.querySelector(".step4").style.display = "block";
+            document.getElementById("openCaptcha").style.display = "inline-block";
+            }
+        });
+
+    </script>
+
 </body>
 </html>

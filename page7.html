@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Error 404</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/> 
+  <style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        font: 15px/22px arial, sans-serif;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;  
+        align-items: center; 
+    }
+
+    .container {
+        text-align: left;         
+        max-width: 600px;         
+        margin-bottom: 20vw;
+        position: left;
+        z-index: 1;
+        padding: 40px;
+    }
+
+    .logo {
+        width: 150px;
+    }
+
+    .orbit {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .robot2 {
+      position: absolute;
+      width: 20vw;
+      animation: squareOrbit 8s linear infinite;
+    }
+
+    @keyframes squareOrbit {
+      0% { top: 0px; left: 0; }
+      25% { top: 0; left: 100%; transform: translate(-100%, 0); }
+      50% { top: 100%; left: 100%; transform: translate(-100%, -100%); }
+      75% { top: 100%; left: 0; transform: translate(0, -100%); }
+      100% { top: 0px; left: 0; transform: none; }
+    }
+
+    .robot3 {
+      position: absolute;
+      width: 20vw;
+      animation: squareOrbitInv 8s linear infinite;
+    }
+
+    @keyframes squareOrbitInv {
+      0% { top: 0px; left: 0; }
+      25% { top: 100%; left: 0; transform: translate(0, -100%); }
+      50% { top: 100%; left: 100%; transform: translate(-100%, -100%); }
+      75% { top: 0; left: 100%; transform: translate(-100%, 0); }
+      100% { top: 0px; left: 0; transform: none; }
+    }
+
+    .robot {
+        margin-bottom: 20vw;
+        animation: cair 5s ease-in forwards;
+        position: relative;
+    }
+
+    @keyframes cair {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+
+    button {
+        border-radius: 4px;
+        color: #3c4043;
+        font-family: arial, sans-serif;
+        font-size: 14px;
+        margin: 11px 4px;
+        padding: 0 16px;
+        line-height: 27px;
+        height: 36px;
+        min-width: 54px;
+        text-align: center;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .btn-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .hover-image {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 200px;
+      margin-top: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .btn-container:hover .hover-image {
+      display: block; 
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14% { transform: scale(1.3); }
+      28% { transform: scale(1); }
+    }
+
+    .pulse {
+      animation: heartbeat 1.0s infinite;
+    }
+
+    .bold {
+        color: black;
+        margin-bottom: 20px;    
+        font-weight: bold;
+    }
+
+    .error, ins {
+        color: #777;
+        text-decoration: none;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 40px;
+      justify-items: center;
+    }
+
+    #secretBtn {
+      position: fixed;
+      bottom: 5px;
+      right: 5px;
+      width: 25px;
+      height: 25px;
+      font-size: 10px;
+      opacity: 0.2;
+      z-index: 999;
+      background-color: #999;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #secretBtn:hover {
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <img class="logo" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_120x44dp.png" alt="Google Logo">
+    <p class="error"><b class="bold">404.</b> ReCAPTCHA</p>
+    
+    <div class="grid" id="buttonGrid"></div>
+  </div>
+
+  <button id="secretBtn" onclick="location.href='page8.html'">Go</button>
+
+  <script>
+    const grid = document.getElementById("buttonGrid");
+
+    for (let i = 1; i <= 20; i++) {
+      const btn = document.createElement("button");
+      btn.textContent = `Button ${i}`;
+      btn.addEventListener("click", () => {
+        alert("maybe he's a little more hidden");
+      });
+      grid.appendChild(btn);
+    }
+  </script>
+
+</body>
+</html>
